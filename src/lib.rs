@@ -17,6 +17,11 @@ common::config::ConfigModule
     #[init]
     fn init(&self, platform_sc: ManagedAddress) {
         self.platform_sc().set(platform_sc);
+        let governance_token = self.platform_contract_proxy()
+            .contract(self.platform_sc().get())
+            .governance_token()
+            .execute_on_dest_context::<TokenIdentifier>();
+        self.base_tokens().insert(governance_token);
         self.set_state_active();
     }
 
