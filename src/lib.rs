@@ -138,7 +138,7 @@ common::config::ConfigModule
 
         let mut pair = self.pair(id).get();
         require!(pair.owner == self.blockchain().get_caller(), ERROR_NOT_PAIR_OWNER);
-        require!(pair.lp_supply > BigUint::zero(), ERROR_NO_LIQUIDITY);
+        require!(pair.lp_supply > 0, ERROR_NO_LIQUIDITY);
 
         pair.state = PairState::Active;
         self.pair(id).set(pair);
@@ -151,6 +151,7 @@ common::config::ConfigModule
 
         let mut pair = self.pair(id).get();
         require!(pair.owner == self.blockchain().get_caller(), ERROR_NOT_PAIR_OWNER);
+        require!(pair.lp_supply > 0, ERROR_NO_LIQUIDITY);
 
         pair.state = PairState::ActiveNoSwap;
         self.pair(id).set(pair);
