@@ -5,6 +5,7 @@ multiversx_sc::imports!();
 pub mod common;
 pub mod helpers;
 pub mod swap;
+pub mod liquidity;
 
 use common::{config::*, errors::*};
 use tfn_platform::common::config::ProxyTrait as _;
@@ -13,6 +14,9 @@ use tfn_dex::common::{errors::*, consts::*};
 #[multiversx_sc::contract]
 pub trait TFNTestDEXContract<ContractReader>:
 common::config::ConfigModule
++helpers::HelpersModule
++swap::SwapModule
++liquidity::LiquidityModule
 {
     #[init]
     fn init(&self, platform_sc: ManagedAddress) {
