@@ -46,9 +46,10 @@ common::config::ConfigModule
         lp_fee: u64,
         owner_fee: u64,
     ) {
+        require!(self.state().get() == State::Active, ERROR_NOT_ACTIVE);
+
         let caller = self.blockchain().get_caller();
         self.check_whitelisted(&caller);
-        require!(self.state().get() == State::Active, ERROR_NOT_ACTIVE);
         require!(self.base_tokens().contains(&base_token), ERROR_WRONG_BASE_TOKEN);
         require!(base_token != token, ERROR_WRONG_BASE_TOKEN);
         require!(self.get_pair_by_tickers(&token, &base_token).is_none(), ERROR_PAIR_EXISTS);
