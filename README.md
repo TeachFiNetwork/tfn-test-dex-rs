@@ -144,6 +144,30 @@ getPlatformAddress() -> ManagedAddress
 getBaseTokens() -> ManagedVec<TokenIdentifier>
 ```
 >Returns the list of base tokens, on parity with which new trading pairs can be created.
+<br/>
+
+```rust
+getPair(id: usize) -> Pair
+```
+>Returns the Pair object associated with the `id` parameter.
+<br/>
+
+```rust
+getPairs() -> ManagedVec<Pair>
+```
+>Returns all trading pairs.
+<br/>
+
+```rust
+getPairByTickers(token1: TokenIdentifier, token2: TokenIdentifier) -> Option<Pair>
+```
+>If a trading pair with the specified tokens is found, Some(pair) is returned and None otherwise.
+<br/>
+
+```rust
+getPairByLpToken(lp_token: TokenIdentifier) -> Option<Pair>
+```
+>If a trading pair with the specified `lp_token` is found, Some(pair) is returned and None otherwise.
 
 <br/>
 
