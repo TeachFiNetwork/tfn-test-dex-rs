@@ -8,6 +8,7 @@
 # Description
 
 This is a child contract of Platform SC. A separate instance is deployed for each platform subscriber.\
+A decentralized market for the students' tokens. Users whitelisted in the parent Platform SC can create trading pairs for any token and receive fees upon each swap performed on that specific pair.
 <br/>
 <br/>
 <br/>
@@ -96,6 +97,47 @@ removeBaseToken(token: TokenIdentifier)
 <br/>
 
 ```rust
+addLiquidity()
+```
+>[!IMPORTANT]
+>*Requirements:* state = active, pair_state != inactive, if pair liquidity = 0, then caller must be the pair owner.
+
+>[!NOTE]
+>The pair is identified by the payment tokens, then liquidity is added, a respective amount of LP tokens is issued and sent back to the caller. 
+>If the pair had no liquidity, then this is the moment when the token price is set as base_token_payment_amount / token_payment_amount.
+<br/>
+
+```rust
+removeLiquidity()
+```
+>[!IMPORTANT]
+>*Requirements:* state = active, pair_state != inactive.
+
+>[!NOTE]
+>The pair is identified by the payment token (should be a pair's LP token). The LP tokens are burned, and the respective amounts of both tokens and base_tokens are sent back to the caller.
+<br/>
+
+```rust
+swapFixedInput(token_out: TokenIdentifier, min_amount_out: BigUint)
+```
+>[!IMPORTANT]
+>*Requirements:* state = active, pair_state = active.
+
+>[!NOTE]
+>The pair is identified by the payment token and the `token_out` parameter. The `out_amount` is calculated and, if it is less than `min_amount_out`, an error is thrown, otherwise the `out_amount` of `token_out` is sent to the caller.
+<br/>
+
+```rust
+swapFixedOutput(token_out: TokenIdentifier, amount_out_wanted: BigUint)
+```
+>[!IMPORTANT]
+>*Requirements:* state = active, pair_state = active.
+
+>[!NOTE]
+>The pair is identified by the payment token and the `token_out` parameter. The `in_amount` is calculated and, if it is higher than the payment amount, an error is thrown, otherwise `amount_out_wanted` of `token_out` is sent to the caller along with `payment_amount - amount_in` of the payment token.
+<br/>
+
+```rust
 setStateActive()
 ```
 >[!IMPORTANT]
@@ -168,6 +210,26 @@ getPairByTickers(token1: TokenIdentifier, token2: TokenIdentifier) -> Option<Pai
 getPairByLpToken(lp_token: TokenIdentifier) -> Option<Pair>
 ```
 >If a trading pair with the specified `lp_token` is found, Some(pair) is returned and None otherwise.
+<br/>
+
+```rust
+getAmountOut(
+    token_in: &TokenIdentifier,
+    token_out: &TokenIdentifier,
+    amount_in: BigUint,
+) -> BigUint
+```
+>Returns how much `amount_out` of `token_out` a user would receive for swapping `amount_in` of `token_in`.
+<br/>
+
+```rust
+getAmountIn(
+    token_in: &TokenIdentifier,
+    token_out: &TokenIdentifier,
+    amount_out: BigUint,
+) -> BigUint
+```
+>Returns how much `amount_in` of `token_in` a user should swap in order to receive `amount_out` of `token_out`. 
 
 <br/>
 
