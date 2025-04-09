@@ -8,7 +8,9 @@
 # Description
 
 This is a child contract of Platform SC. A separate instance is deployed for each platform subscriber.\
-A decentralized market for the students' tokens. Users whitelisted in the parent Platform SC can create trading pairs for any token and receive fees upon each swap performed on that specific pair.
+A decentralized market for the students' tokens. Users whitelisted in the parent Platform SC can create trading pairs for any token and receive fees upon each swap performed on that specific pair. 
+Additionally, other students can add liquidity in the DEX and earn LP fees upon each swap, but suffer from Impermanent Loss due to price fluctuations and the constant product formula of this AMM.\
+The best way to develop financial literacy is by practice.
 <br/>
 <br/>
 <br/>
