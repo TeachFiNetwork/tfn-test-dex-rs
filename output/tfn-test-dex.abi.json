@@ -182,8 +182,7 @@
             "inputs": [],
             "outputs": [
                 {
-                    "type": "variadic<TokenIdentifier>",
-                    "multi_result": true
+                    "type": "List<TokenIdentifier>"
                 }
             ]
         },
@@ -227,11 +226,11 @@
             "mutability": "readonly",
             "inputs": [
                 {
-                    "name": "base_token",
+                    "name": "token1",
                     "type": "TokenIdentifier"
                 },
                 {
-                    "name": "token",
+                    "name": "token2",
                     "type": "TokenIdentifier"
                 }
             ],

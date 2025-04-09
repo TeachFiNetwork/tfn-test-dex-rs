@@ -190,7 +190,6 @@ common::config::ConfigModule
 
         let mut pair = self.pair(id).get();
         require!(pair.owner == self.blockchain().get_caller(), ERROR_NOT_PAIR_OWNER);
-        require!(pair.lp_supply > 0, ERROR_NO_LIQUIDITY);
 
         pair.state = PairState::ActiveNoSwap;
         self.pair(id).set(pair);
@@ -230,7 +229,7 @@ common::config::ConfigModule
     fn add_base_token(&self, token: TokenIdentifier) {
         require!(self.state().get() == State::Active, ERROR_NOT_ACTIVE);
         require!(!self.base_tokens().contains(&token), ERROR_BASE_TOKEN_EXISTS);
-        self.check_whitelisted(&self.blockchain().get_caller());
+        self.only_subscriber(&self.blockchain().get_caller());
 
         self.base_tokens().insert(token);
     }
@@ -239,16 +238,16 @@ common::config::ConfigModule
     fn remove_base_token(&self, token: TokenIdentifier) {
         require!(self.state().get() == State::Active, ERROR_NOT_ACTIVE);
         require!(self.base_tokens().contains(&token), ERROR_WRONG_BASE_TOKEN);
-        self.check_whitelisted(&self.blockchain().get_caller());
+        self.only_subscriber(&self.blockchain().get_caller());
 
-        for pair_id in 0..self.last_pair_id().get() {
-            if self.pair(pair_id).is_empty() {
-                continue;
-            }
+        // for pair_id in 0..self.last_pair_id().get() {
+        //     if self.pair(pair_id).is_empty() {
+        //         continue;
+        //     }
 
-            let pair = self.pair(pair_id).get();
-            require!(pair.base_token != token, ERROR_BASE_TOKEN_IN_USE);
-        }
+        //     let pair = self.pair(pair_id).get();
+        //     require!(pair.base_token != token, ERROR_BASE_TOKEN_IN_USE);
+        // }
         self.base_tokens().swap_remove(&token);
     }
 
@@ -258,5 +257,13 @@ common::config::ConfigModule
             .contract(self.platform_sc().get())
             .check_whitelisted(address)
             .execute_on_dest_context::<()>();
+    }
+
+    fn only_subscriber(&self, address: &ManagedAddress) {
+        let id: Option<u64> = self.platform_contract_proxy()
+            .contract(self.platform_sc().get())
+            .get_subscriber_id_by_address(address)
+            .execute_on_dest_context();
+        require!(id.is_some(), ERROR_NOT_SUBSCRIBER);
     }
 }

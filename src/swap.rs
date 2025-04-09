@@ -25,7 +25,7 @@ common::config::ConfigModule
         };
         require!(pair.state == PairState::Active, ERROR_PAIR_NOT_ACTIVE);
 
-        let fee_in = self.base_tokens().contains(&payment.token_identifier);
+        let fee_in = payment.token_identifier == pair.base_token;
         let (amount_out, new_token_liquidity, new_base_liquidity, owner_fee) =
             if token_out == pair.base_token {
                 self.do_swap_fixed_input(
@@ -79,7 +79,7 @@ common::config::ConfigModule
         };
         require!(pair.state == PairState::Active, ERROR_PAIR_NOT_ACTIVE);
 
-        let fee_in = self.base_tokens().contains(&payment.token_identifier);
+        let fee_in = payment.token_identifier == pair.base_token;
         let (amount_in, new_token_liquidity, new_base_liquidity, owner_fee) =
             if token_out == pair.base_token {
                 self.do_swap_fixed_output(
@@ -195,7 +195,7 @@ common::config::ConfigModule
             Some(pair) => pair,
             None => sc_panic!(ERROR_PAIR_NOT_FOUND),
         };
-        let fee_in = self.base_tokens().contains(token_in);
+        let fee_in = token_in == &pair.base_token;
         if token_in == &pair.token {
             require!(pair.liquidity_base > 0, ERROR_NO_LIQUIDITY);
 
@@ -220,7 +220,7 @@ common::config::ConfigModule
             Some(pair) => pair,
             None => sc_panic!(ERROR_PAIR_NOT_FOUND),
         };
-        let fee_in = self.base_tokens().contains(token_in);
+        let fee_in = token_in == &pair.base_token;
         if token_in == &pair.token {
             require!(pair.liquidity_base > 0, ERROR_NO_LIQUIDITY);
 

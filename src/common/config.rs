@@ -78,9 +78,18 @@ pub trait ConfigModule {
     }
 
     // base tokens
-    #[view(getBaseTokens)]
     #[storage_mapper("base_tokens")]
     fn base_tokens(&self) -> UnorderedSetMapper<TokenIdentifier>;
+
+    #[view(getBaseTokens)]
+    fn get_base_tokens(&self) -> ManagedVec<TokenIdentifier<Self::Api>> {
+        let mut base_tokens = ManagedVec::new();
+        for token in self.base_tokens().iter() {
+            base_tokens.push(token);
+        }
+
+        base_tokens
+    }
 
     // pairs
     #[view(getPair)]
@@ -93,9 +102,8 @@ pub trait ConfigModule {
 
     #[view(getPairs)]
     fn get_pairs(&self) -> ManagedVec<Pair<Self::Api>> {
-        let last_pair_id = self.last_pair_id().get();
         let mut pairs = ManagedVec::new();
-        for id in 0..last_pair_id {
+        for id in 0..self.last_pair_id().get() {
             pairs.push(self.pair(id).get());
         }
 
@@ -103,14 +111,13 @@ pub trait ConfigModule {
     }
 
     #[view(getPairByTickers)]
-    fn get_pair_by_tickers(&self, base_token: &TokenIdentifier, token: &TokenIdentifier) -> Option<Pair<Self::Api>> {
-        let last_pair_id = self.last_pair_id().get();
-        for id in 0..last_pair_id {
+    fn get_pair_by_tickers(&self, token1: &TokenIdentifier, token2: &TokenIdentifier) -> Option<Pair<Self::Api>> {
+        for id in 0..self.last_pair_id().get() {
             let pair = self.pair(id).get();
-            if &pair.base_token == base_token && &pair.token == token {
+            if &pair.base_token == token1 && &pair.token == token2 {
                 return Some(pair);
             }
-            if &pair.token == base_token && &pair.base_token == token {
+            if &pair.token == token1 && &pair.base_token == token2 {
                 return Some(pair);
             }
         }
