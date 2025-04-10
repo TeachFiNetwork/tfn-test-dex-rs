@@ -42,7 +42,6 @@ common::config::ConfigModule
         &self,
         base_token: TokenIdentifier,
         token: TokenIdentifier,
-        decimals: u8,
         lp_fee: u64,
         owner_fee: u64,
     ) {
@@ -90,7 +89,6 @@ common::config::ConfigModule
                 caller,
                 &base_token,
                 &token,
-                decimals,
                 lp_fee,
                 owner_fee,
             ))
@@ -103,7 +101,6 @@ common::config::ConfigModule
         caller: ManagedAddress,
         base_token: &TokenIdentifier,
         token: &TokenIdentifier,
-        decimals: u8,
         lp_fee: u64,
         owner_fee: u64,
         #[call_result] result: ManagedAsyncCallResult<TokenIdentifier>,
@@ -116,7 +113,6 @@ common::config::ConfigModule
                     owner: caller,
                     state: PairState::ActiveNoSwap,
                     token: token.clone(),
-                    decimals,
                     base_token: base_token.clone(),
                     lp_token,
                     lp_supply: BigUint::zero(),
@@ -139,7 +135,6 @@ common::config::ConfigModule
         &self,
         base_token: TokenIdentifier,
         token: TokenIdentifier,
-        decimals: u8,
         lp_fee: u64,
         owner_fee: u64,
     ) -> TokenIdentifier {
@@ -155,7 +150,6 @@ common::config::ConfigModule
             owner: self.blockchain().get_caller(),
             state: PairState::ActiveNoSwap,
             token: token.clone(),
-            decimals,
             base_token: base_token.clone(),
             lp_token: lp_token.clone(),
             lp_supply: BigUint::zero(),

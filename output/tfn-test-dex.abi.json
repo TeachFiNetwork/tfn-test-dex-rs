@@ -42,10 +42,6 @@
                     "type": "TokenIdentifier"
                 },
                 {
-                    "name": "decimals",
-                    "type": "u8"
-                },
-                {
                     "name": "lp_fee",
                     "type": "u64"
                 },
@@ -377,10 +373,6 @@
                 {
                     "name": "token",
                     "type": "TokenIdentifier"
-                },
-                {
-                    "name": "decimals",
-                    "type": "u8"
                 },
                 {
                     "name": "base_token",

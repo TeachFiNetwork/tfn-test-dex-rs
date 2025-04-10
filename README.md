@@ -22,7 +22,6 @@ The best way to develop financial literacy is by practice.
 createPair(
     base_token: TokenIdentifier,
     token: TokenIdentifier,
-    decimals: u8,
     lp_fee: u64,
     owner_fee: u64,
 )
@@ -262,7 +261,6 @@ pub struct Pair<M: ManagedTypeApi> {
     pub owner: ManagedAddress<M>,
     pub state: PairState,
     pub token: TokenIdentifier<M>,
-    pub decimals: u8,
     pub base_token: TokenIdentifier<M>,
     pub lp_token: TokenIdentifier<M>,
     pub lp_supply: BigUint<M>,
