@@ -131,38 +131,38 @@ common::config::ConfigModule
         }
     }
 
-    fn test_create_pair(
-        &self,
-        base_token: TokenIdentifier,
-        token: TokenIdentifier,
-        lp_fee: u64,
-        owner_fee: u64,
-    ) -> TokenIdentifier {
-        let mut lp_ticker = token.ticker().concat(base_token.ticker());
-        if lp_ticker.len() > 10 {
-            lp_ticker = lp_ticker.copy_slice(0, 10).unwrap();
-        }
-        let lp_token = TokenIdentifier::from(lp_ticker.concat(ManagedBuffer::from("-123456")));
+    // fn test_create_pair(
+    //     &self,
+    //     base_token: TokenIdentifier,
+    //     token: TokenIdentifier,
+    //     lp_fee: u64,
+    //     owner_fee: u64,
+    // ) -> TokenIdentifier {
+    //     let mut lp_ticker = token.ticker().concat(base_token.ticker());
+    //     if lp_ticker.len() > 10 {
+    //         lp_ticker = lp_ticker.copy_slice(0, 10).unwrap();
+    //     }
+    //     let lp_token = TokenIdentifier::from(lp_ticker.concat(ManagedBuffer::from("-123456")));
 
-        let id = self.last_pair_id().get();
-        let pair = Pair {
-            id,
-            owner: self.blockchain().get_caller(),
-            state: PairState::ActiveNoSwap,
-            token: token.clone(),
-            base_token: base_token.clone(),
-            lp_token: lp_token.clone(),
-            lp_supply: BigUint::zero(),
-            lp_fee,
-            owner_fee,
-            liquidity_token: BigUint::zero(),
-            liquidity_base: BigUint::zero(),
-        };
-        self.last_pair_id().set(id + 1);
-        self.pair(id).set(pair);
+    //     let id = self.last_pair_id().get();
+    //     let pair = Pair {
+    //         id,
+    //         owner: self.blockchain().get_caller(),
+    //         state: PairState::ActiveNoSwap,
+    //         token: token.clone(),
+    //         base_token: base_token.clone(),
+    //         lp_token: lp_token.clone(),
+    //         lp_supply: BigUint::zero(),
+    //         lp_fee,
+    //         owner_fee,
+    //         liquidity_token: BigUint::zero(),
+    //         liquidity_base: BigUint::zero(),
+    //     };
+    //     self.last_pair_id().set(id + 1);
+    //     self.pair(id).set(pair);
 
-        lp_token
-    }
+    //     lp_token
+    // }
 
     #[endpoint(setPairActive)]
     fn set_pair_active(&self, id: usize) {
