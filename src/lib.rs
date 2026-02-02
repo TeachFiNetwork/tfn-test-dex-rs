@@ -68,30 +68,14 @@ common::config::ConfigModule
 
         self.send()
             .esdt_system_sc_proxy()
-            .issue_fungible(
+            .issue_and_set_all_roles(
                 issue_cost,
                 lp_name,
                 lp_ticker,
-                BigUint::zero(),
-                FungibleTokenProperties {
-                    num_decimals: LP_TOKEN_DECIMALS,
-                    can_freeze: true,
-                    can_wipe: true,
-                    can_pause: true,
-                    can_mint: true,
-                    can_burn: true,
-                    can_change_owner: true,
-                    can_upgrade: true,
-                    can_add_special_roles: true,
-                },
+                EsdtTokenType::Fungible,
+                LP_TOKEN_DECIMALS,
             )
-            .with_callback(self.callbacks().lp_token_issue_callback(
-                caller,
-                &base_token,
-                &token,
-                lp_fee,
-                owner_fee,
-            ))
+            .with_callback(self.callbacks().lp_token_issue_callback(caller, &base_token, &token, lp_fee, owner_fee))
             .async_call_and_exit();
     }
 
